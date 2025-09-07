@@ -67,3 +67,45 @@ compressBtn.addEventListener('click', () => {
 
 </body>
 </html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Webcam Tracker</title>
+<style>
+  body { text-align: center; font-family: Arial, sans-serif; margin: 20px; }
+  video { border: 2px solid #333; border-radius: 8px; }
+</style>
+</head>
+<body>
+<h2>Webcam Tracker</h2>
+<video id="webcam" width="400" height="300" autoplay></video>
+<p id="count"></p>
+
+<script>
+  // LocalStorage se count nikalna
+  let openCount = localStorage.getItem('webcamOpenCount');
+  openCount = openCount ? parseInt(openCount) : 0;
+  openCount++;
+  localStorage.setItem('webcamOpenCount', openCount);
+
+  document.getElementById('count').innerText = `Webcam opened ${openCount} time(s) on this device.`;
+
+  // Webcam start karna
+  const video = document.getElementById('webcam');
+  if (navigator.mediaDevices.getUserMedia) {
+    navigator.mediaDevices.getUserMedia({ video: true })
+      .then(stream => {
+        video.srcObject = stream;
+      })
+      .catch(err => {
+        alert('Webcam access denied!');
+        console.error(err);
+      });
+  } else {
+    alert('Webcam not supported in this browser.');
+  }
+</script>
+</body>
+</html>
