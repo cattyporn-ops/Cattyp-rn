@@ -1,1 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Image Compressor by MB</title>
+<style>
+  body { font-family: Arial; display: flex; flex-direction: column; align-items: center; padding: 20px; background:#f0f0f0;}
+  input, button { padding:10px; margin:10px 0; width:90%; max-width:300px; border-radius:8px; border:1px solid #ccc;}
+  #output img { max-width:100%; margin-top:15px; border-radius:8px; }
+</style>
+</head>
+<body>
 
+<h2>Image Compressor (Target MB)</h2>
+<input type="file" id="fileInput" accept="image/*">
+<input type="number" id="mbInput" placeholder="Target Size in MB (e.g. 0.5)">
+<button id="compressBtn">Compress</button>
+<div id="output"></div>
+
+<script>
+const fileInput = document.getElementById('fileInput');
+const mbInput = document.getElementById('mbInput');
+const compressBtn = document.getElementById('compressBtn');
+const output = document.getElementById('output');
+
+compressBtn.addEventListener('click', () => {
+    const file = fileInput.files[0];
+    if(!file) { alert("Select an image!"); return; }
+
+    const targetMB = parseFloat(mbInput.value);
+    if(!targetMB || targetMB <=0){ alert("Enter valid MB!"); return; }
+
+    const reader = new FileReader();
+    reader.onload = function(e){
+        const img = new Image();
+        img.src = e.target.result;
+
+        img.onload = function(){
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = img.width;
+            canvas.height = img.height;
+            ctx.drawImage(img, 0, 0);
+
+            // Iteratively reduce quality to match target MB
+            let quality = 0.9;
+            function compress(){
+                const compressed = canvas.toDataURL('image/jpeg', quality);
+                const sizeMB = compressed.length * (3/4) / (1024*1024); // approximate MB
+                if(sizeMB > targetMB && quality > 0.1){
+                    quality -= 0.05;
+                    compress();
+                } else {
+                    output.innerHTML = `<p>Compressed Image (~${sizeMB.toFixed(2)} MB):</p>
+                                        <img src="${compressed}">
+                                        <br>
+                                        <a href="${compressed}" download="compressed.jpg">Download</a>`;
+                }
+            }
+            compress();
+        }
+    }
+    reader.readAsDataURL(file);
+});
+</script>
+
+</body>
+</html>
