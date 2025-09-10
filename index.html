@@ -23,8 +23,6 @@ h2.section-title {margin:20px 0; text-align:center; color:#ff6b6b;}
   .age-btn, .submit-btn, .btn-header {width:100%; margin-bottom:10px;}
 }
 </style>
-<!-- Google reCAPTCHA -->
-<script src="https://www.google.com/recaptcha/api.js" async defer></script>
 </head>
 <body>
 
@@ -33,16 +31,8 @@ h2.section-title {margin:20px 0; text-align:center; color:#ff6b6b;}
   <button class="btn-header" onclick="openFeedback()">Feedback / Upload</button>
 </header>
 
-<!-- reCAPTCHA Modal -->
-<div id="captchaModal" class="modal">
-  <div class="modal-content">
-    <h2>Verify You're Human</h2>
-    <div class="g-recaptcha" data-sitekey="YOUR_SITE_KEY" data-callback="captchaSuccess"></div>
-  </div>
-</div>
-
 <!-- Age Verification Modal -->
-<div id="ageModal" class="modal" style="display:none;">
+<div id="ageModal" class="modal">
   <div class="modal-content">
     <h2>Are you 13+?</h2>
     <button class="age-btn" onclick="acceptAge()">Yes</button>
@@ -89,19 +79,12 @@ h2.section-title {margin:20px 0; text-align:center; color:#ff6b6b;}
       <label>Upload File (optional):
         <input type="file" name="upload">
       </label>
-      <div class="g-recaptcha" data-sitekey="YOUR_SITE_KEY"></div>
       <button type="submit" class="submit-btn">Send</button>
     </form>
   </div>
 </div>
 
 <script>
-// reCAPTCHA callback
-function captchaSuccess(){
-  document.getElementById('captchaModal').style.display='none';
-  document.getElementById('ageModal').style.display='flex';
-}
-
 // Age Verification
 function acceptAge(){ 
   document.getElementById('ageModal').style.display='none';
@@ -120,9 +103,10 @@ window.onclick = function(event){if(event.target == document.getElementById('fee
 
 // Auto-update Video & Photo Content
 const videos = [
-  {title:"Nude 2025 1", link:"https://drive.google.com/file/d/1-CnuGW3P-ZxBnTWwbCY7ofJ1K9nbjLUb/preview"},
+  {title:"Nude 1", link:"https://drive.google.com/file/d/1-CnuGW3P-ZxBnTWwbCY7ofJ1K9nbjLUb/preview"},
   {title:"Video 2", link:"https://drive.google.com/file/d/YOUR_FILE_ID_2/preview"}
 ];
+
 const photos = [
   {title:"Photo 1", link:"https://drive.google.com/uc?export=view&id=YOUR_PHOTO_FILE_ID_1"},
   {title:"Photo 2", link:"https://drive.google.com/uc?export=view&id=YOUR_PHOTO_FILE_ID_2"}
