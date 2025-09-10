@@ -3,31 +3,136 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Free2Free — Video Reels</title>
+<title>Free2Free — Google Drive Reels</title>
 <style>
   *{margin:0;padding:0;box-sizing:border-box;}
-  html, body{height:100%;overflow-x:hidden;background:#111;color:#fff;font-family:sans-serif;}
-  .reel{height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;scroll-snap-align:start;}
+  body{font-family:sans-serif;background:#111;color:#fff;overflow-x:hidden;}
+  header, footer{background:#222;padding:15px;text-align:center;font-size:20px;font-weight:bold;position:sticky;z-index:100;}
+  header{top:0;} footer{bottom:0;}
+  .header-content{display:flex;justify-content:space-between;align-items:center;max-width:1200px;margin:0 auto;}
+  .btn-header{padding:8px 12px;background:#ff6b6b;color:#111;font-weight:bold;border:none;border-radius:6px;cursor:pointer;}
+  
+  /* Landing Page */
+  .landing{height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;}
+  .landing h1{font-size:36px;margin-bottom:30px;}
+  .btn{padding:15px 30px;background:#ff6b6b;color:#111;font-weight:bold;border:none;border-radius:10px;font-size:20px;cursor:pointer;}
+  
+  /* Reels */
+  .reels{scroll-snap-type: y mandatory; overflow-y: scroll; height:100vh;}
+  .reel{height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;scroll-snap-align:start;padding:20px;}
   iframe{width:100%;max-width:500px;height:80vh;border:0;border-radius:10px;}
   .title{margin-top:10px;font-size:18px;font-weight:bold;text-align:center;}
-  body{scroll-snap-type: y mandatory; overflow-y: scroll;}
+
+  /* Feedback Modal */
+  .modal{display:none;position:fixed;z-index:200;left:0;top:0;width:100%;height:100%;overflow:auto;background:rgba(0,0,0,0.8);}
+  .modal-content{background:#222;margin:10% auto;padding:20px;border-radius:10px;max-width:400px;color:#fff;}
+  .modal-content input, .modal-content textarea, .modal-content input[type="file"], .modal-content select{width:100%;padding:8px;margin:8px 0;border-radius:6px;border:1px solid #555;background:#111;color:#fff;}
+  .modal-content label{display:block;margin-bottom:10px;}
+  .close{color:#ff6b6b;float:right;font-size:28px;font-weight:bold;cursor:pointer;}
+  .submit-btn{padding:10px 15px;background:#ff6b6b;color:#111;font-weight:bold;border:none;border-radius:6px;cursor:pointer;}
 </style>
 </head>
 <body>
 
-<!-- sexy Reel 1 -->
-<div class="reel">
-  <iframe src="https://drive.google.com/file/d/1-CnuGW3P-ZxBnTWwbCY7ofJ1K9nbjLUb/preview" allowfullscreen></iframe>
-  <div class="title">Video 1</div>
+<header>
+  <div class="header-content">
+    <div>Free2Free</div>
+    <button class="btn-header" onclick="openFeedback()">Feedback / Upload</button>
+  </div>
+</header>
+
+<!-- Landing Page -->
+<div class="landing" id="landing">
+  <h1>Welcome to Free2Free</h1>
+  <button class="btn" onclick="showReels()">See Reels</button>
 </div>
 
-<!-- sexy Reel  2 -->
-<div class="reel">
-  <iframe src="https://share.google/images/nlesO5EIYzqMSl3Jm" allowfullscreen></iframe>
-  <div class="title">Video 2</div>
+<!-- Reels Section (hidden initially) -->
+<div class="reels" id="reels" style="display:none;">
+  <!-- Video 1 (Your Google Drive Link) -->
+  <div class="reel">
+    <iframe src="https://drive.google.com/file/d/1-CnuGW3P-ZxBnTWwbCY7ofJ1K9nbjLUb/preview" allowfullscreen></iframe>
+    <div class="title">Video 1</div>
+  </div>
+
+  <!-- Video 2 to Video 50 placeholders -->
+  <div class="reel">
+    <iframe src="https://drive.google.com/file/d/YOUR_FILE_ID_2/preview" allowfullscreen></iframe>
+    <div class="title">Video 2</div>
+  </div>
+  <div class="reel">
+    <iframe src="https://drive.google.com/file/d/YOUR_FILE_ID_3/preview" allowfullscreen></iframe>
+    <div class="title">Video 3</div>
+  </div>
+  <!-- Repeat similarly up to Video 50 -->
 </div>
 
-<!-- Repeat the above block for each video, updating the title accordingly -->
+<footer>
+  &copy; 2025 Free2Free
+</footer>
+
+<!-- Feedback / File Upload Modal -->
+<div id="feedbackModal" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeFeedback()">&times;</span>
+    <h2>Submit Feedback / Complaint / Request</h2>
+    <form 
+      action="https://formspree.io/f/mwpnyrar" 
+      method="POST" 
+      enctype="multipart/form-data"
+    >
+      <label>
+        Your Email:
+        <input type="email" name="email" placeholder="Enter your email" required>
+      </label>
+
+      <label>
+        Type of Submission:
+        <select name="type" required>
+          <option value="">-- Select --</option>
+          <option value="Feedback">Feedback</option>
+          <option value="Complaint">Complaint</option>
+          <option value="Request">Request for more videos</option>
+        </select>
+      </label>
+
+      <label>
+        Message:
+        <textarea name="message" placeholder="Write your message here..." rows="5" required></textarea>
+      </label>
+
+      <label>
+        Upload File (optional):
+        <input type="file" name="upload">
+      </label>
+
+      <button type="submit" class="submit-btn">Send</button>
+    </form>
+  </div>
+</div>
+
+<script>
+function showReels(){
+  const reels = document.getElementById('reels');
+  reels.style.display = 'block';
+  reels.scrollIntoView({behavior: 'smooth'});
+}
+
+function openFeedback(){
+  document.getElementById('feedbackModal').style.display = 'block';
+}
+
+function closeFeedback(){
+  document.getElementById('feedbackModal').style.display = 'none';
+}
+
+// Close modal when clicking outside content
+window.onclick = function(event){
+  if(event.target == document.getElementById('feedbackModal')){
+    closeFeedback();
+  }
+}
+</script>
 
 </body>
 </html>
