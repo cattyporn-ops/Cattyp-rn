@@ -102,15 +102,13 @@ function closeFeedback(){document.getElementById('feedbackModal').style.display=
 window.onclick = function(event){if(event.target == document.getElementById('feedbackModal')){closeFeedback();}}
 
 // Auto-update Video & Photo Content
+
 const videos = [
   {title:"Nude 1", link:"https://drive.google.com/file/d/1-CnuGW3P-ZxBnTWwbCY7ofJ1K9nbjLUb/preview"},
-  {title:"Video 2", link:"https://drive.google.com/file/d/YOUR_FILE_ID_2/preview"}
+  {title:"Nude 2", link:"https://drive.google.com/file/d/1-OQtg_zc2fy22hjPzijyXTkkoHSbsEO7/preview"}
 ];
 
-const photos = [
-  {title:" Nude Photo 1", link:"https://drive.google.com/file/d/1-W9BiepNS3es_T0LDeagNux9RUzN2k-B/view?usp=drivesdk"},
-  {title:"Photo 2", link:"https://drive.google.com/uc?export=view&id=YOUR_PHOTO_FILE_ID_2"}
-];
+
 
 const videoGrid = document.getElementById('videoGrid');
 videos.forEach(item => {
@@ -126,7 +124,7 @@ const photoGrid = document.getElementById('photoGrid');
 photos.forEach(item => {
   const card = document.createElement('div');
   card.className='card';
-  const img = document.createElement('img'); img.src=item.link;
+  const img = document.createElement('img'); img.src=item.link; img.alt=item.title;
   const title = document.createElement('div'); title.className='title'; title.textContent=item.title;
   card.appendChild(img); card.appendChild(title); photoGrid.appendChild(card);
 });
