@@ -1,93 +1,81 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Free2Free — Google Drive Reels</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Free2Free — Videos & Photos</title>
 <style>
-  *{margin:0;padding:0;box-sizing:border-box;}
-  body{font-family:sans-serif;background:#111;color:#fff;overflow-x:hidden;}
-  header, footer{background:#222;padding:15px;text-align:center;font-size:20px;font-weight:bold;position:sticky;z-index:100;}
-  header{top:0;} footer{bottom:0;}
-  .header-content{display:flex;justify-content:space-between;align-items:center;max-width:1200px;margin:0 auto;}
-  .btn-header{padding:8px 12px;background:#ff6b6b;color:#111;font-weight:bold;border:none;border-radius:6px;cursor:pointer;}
-  
-  /* Landing Page */
-  .landing{height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;}
-  .landing h1{font-size:36px;margin-bottom:30px;}
-  .btn{padding:15px 30px;background:#ff6b6b;color:#111;font-weight:bold;border:none;border-radius:10px;font-size:20px;cursor:pointer;}
-  
-  /* Reels */
-  .reels{scroll-snap-type: y mandatory; overflow-y: scroll; height:100vh;}
-  .reel{height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;scroll-snap-align:start;padding:20px;}
-  iframe{width:100%;max-width:500px;height:80vh;border:0;border-radius:10px;}
-  .title{margin-top:10px;font-size:18px;font-weight:bold;text-align:center;}
-
-  /* Feedback Modal */
-  .modal{display:none;position:fixed;z-index:200;left:0;top:0;width:100%;height:100%;overflow:auto;background:rgba(0,0,0,0.8);}
-  .modal-content{background:#222;margin:10% auto;padding:20px;border-radius:10px;max-width:400px;color:#fff;}
-  .modal-content input, .modal-content textarea, .modal-content input[type="file"], .modal-content select{width:100%;padding:8px;margin:8px 0;border-radius:6px;border:1px solid #555;background:#111;color:#fff;}
-  .modal-content label{display:block;margin-bottom:10px;}
-  .close{color:#ff6b6b;float:right;font-size:28px;font-weight:bold;cursor:pointer;}
-  .submit-btn{padding:10px 15px;background:#ff6b6b;color:#111;font-weight:bold;border:none;border-radius:6px;cursor:pointer;}
+body {font-family:sans-serif; background:#111; color:#fff; margin:0;}
+header, footer {background:#222; text-align:center; padding:15px;}
+header {position:sticky; top:0; z-index:100;}
+.btn-header {padding:8px 12px; background:#ff6b6b; color:#111; border:none; border-radius:6px; cursor:pointer;}
+section {max-width:1200px; margin:20px auto; padding:0 10px;}
+h2.section-title {margin:20px 0; text-align:center; color:#ff6b6b;}
+.grid {display:grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap:15px;}
+.card {background:#222; border-radius:10px; overflow:hidden; display:flex; flex-direction:column; align-items:center; padding:10px;}
+.card iframe, .card img {width:100%; height:200px; border:none; border-radius:10px;}
+.card .title {margin-top:8px; font-weight:bold; text-align:center;}
+.modal {display:flex; position:fixed; z-index:500; left:0; top:0; width:100%; height:100%; justify-content:center; align-items:center; background:rgba(0,0,0,0.9);}
+.modal-content {background:#222; padding:30px; border-radius:10px; text-align:center; color:#fff; max-width:400px;}
+.age-btn, .submit-btn, .btn-header {padding:10px 20px; margin:10px; border:none; border-radius:6px; background:#ff6b6b; color:#111; cursor:pointer; font-weight:bold;}
+@media(max-width:500px){
+  .card iframe, .card img {height:180px;}
+  .age-btn, .submit-btn, .btn-header {width:100%; margin-bottom:10px;}
+}
 </style>
+<!-- Google reCAPTCHA -->
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
 </head>
 <body>
 
 <header>
-  <div class="header-content">
-    <div>Free2Free</div>
-    <button class="btn-header" onclick="openFeedback()">Feedback / Upload</button>
-  </div>
+  Free2Free
+  <button class="btn-header" onclick="openFeedback()">Feedback / Upload</button>
 </header>
 
-<!-- Landing Page -->
-<div class="landing" id="landing">
-  <h1>Welcome to Free2Free</h1>
-  <button class="btn" onclick="showReels()">See Reels</button>
+<!-- reCAPTCHA Modal -->
+<div id="captchaModal" class="modal">
+  <div class="modal-content">
+    <h2>Verify You're Human</h2>
+    <div class="g-recaptcha" data-sitekey="YOUR_SITE_KEY" data-callback="captchaSuccess"></div>
+  </div>
 </div>
 
-<!-- Reels Section (hidden initially) -->
-<div class="reels" id="reels" style="display:none;">
-  <!-- Video 1 (Your Google Drive Link) -->
-  <div class="reel">
-    <iframe src="https://drive.google.com/file/d/1-CnuGW3P-ZxBnTWwbCY7ofJ1K9nbjLUb/preview" allowfullscreen></iframe>
-    <div class="title">Video 1</div>
+<!-- Age Verification Modal -->
+<div id="ageModal" class="modal" style="display:none;">
+  <div class="modal-content">
+    <h2>Are you 13+?</h2>
+    <button class="age-btn" onclick="acceptAge()">Yes</button>
+    <button class="age-btn" onclick="denyAge()">No</button>
   </div>
-
-  <!-- Video 2 to Video 50 placeholders -->
-  <div class="reel">
-    <iframe src="https://drive.google.com/file/d/YOUR_FILE_ID_2/preview" allowfullscreen></iframe>
-    <div class="title">Video 2</div>
-  </div>
-  <div class="reel">
-    <iframe src="https://drive.google.com/file/d/YOUR_FILE_ID_3/preview" allowfullscreen></iframe>
-    <div class="title">Video 3</div>
-  </div>
-  <!-- Repeat similarly up to Video 50 -->
 </div>
+
+<!-- Videos Section -->
+<section id="videoSection" style="display:none;">
+  <h2 class="section-title">Videos</h2>
+  <div class="grid" id="videoGrid"></div>
+</section>
+
+<!-- Photos Section -->
+<section id="photoSection" style="display:none;">
+  <h2 class="section-title">Photos</h2>
+  <div class="grid" id="photoGrid"></div>
+</section>
 
 <footer>
   &copy; 2025 Free2Free
 </footer>
 
-<!-- Feedback / File Upload Modal -->
-<div id="feedbackModal" class="modal">
+<!-- Feedback Modal -->
+<div id="feedbackModal" class="modal" style="display:none;">
   <div class="modal-content">
     <span class="close" onclick="closeFeedback()">&times;</span>
     <h2>Submit Feedback / Complaint / Request</h2>
-    <form 
-      action="https://formspree.io/f/mwpnyrar" 
-      method="POST" 
-      enctype="multipart/form-data"
-    >
-      <label>
-        Your Email:
+    <form action="https://formspree.io/f/mwpnyrar" method="POST" enctype="multipart/form-data">
+      <label>Email:
         <input type="email" name="email" placeholder="Enter your email" required>
       </label>
-
-      <label>
-        Type of Submission:
+      <label>Type:
         <select name="type" required>
           <option value="">-- Select --</option>
           <option value="Feedback">Feedback</option>
@@ -95,43 +83,69 @@
           <option value="Request">Request for more videos</option>
         </select>
       </label>
-
-      <label>
-        Message:
-        <textarea name="message" placeholder="Write your message here..." rows="5" required></textarea>
+      <label>Message:
+        <textarea name="message" placeholder="Write your message..." rows="5" required></textarea>
       </label>
-
-      <label>
-        Upload File (optional):
+      <label>Upload File (optional):
         <input type="file" name="upload">
       </label>
-
+      <div class="g-recaptcha" data-sitekey="YOUR_SITE_KEY"></div>
       <button type="submit" class="submit-btn">Send</button>
     </form>
   </div>
 </div>
 
 <script>
-function showReels(){
-  const reels = document.getElementById('reels');
-  reels.style.display = 'block';
-  reels.scrollIntoView({behavior: 'smooth'});
+// reCAPTCHA callback
+function captchaSuccess(){
+  document.getElementById('captchaModal').style.display='none';
+  document.getElementById('ageModal').style.display='flex';
 }
 
-function openFeedback(){
-  document.getElementById('feedbackModal').style.display = 'block';
+// Age Verification
+function acceptAge(){ 
+  document.getElementById('ageModal').style.display='none';
+  document.getElementById('videoSection').style.display='block';
+  document.getElementById('photoSection').style.display='block';
+}
+function denyAge(){ 
+  alert("You must be 13+ to access this site."); 
+  window.location.href="about:blank"; 
 }
 
-function closeFeedback(){
-  document.getElementById('feedbackModal').style.display = 'none';
-}
+// Feedback modal
+function openFeedback(){document.getElementById('feedbackModal').style.display='flex';}
+function closeFeedback(){document.getElementById('feedbackModal').style.display='none';}
+window.onclick = function(event){if(event.target == document.getElementById('feedbackModal')){closeFeedback();}}
 
-// Close modal when clicking outside content
-window.onclick = function(event){
-  if(event.target == document.getElementById('feedbackModal')){
-    closeFeedback();
-  }
-}
+// Auto-update Video & Photo Content
+const videos = [
+  {title:"Nude 2025 1", link:"https://drive.google.com/file/d/1-CnuGW3P-ZxBnTWwbCY7ofJ1K9nbjLUb/preview"},
+  {title:"Video 2", link:"https://drive.google.com/file/d/YOUR_FILE_ID_2/preview"}
+];
+const photos = [
+  {title:"Photo 1", link:"https://drive.google.com/uc?export=view&id=YOUR_PHOTO_FILE_ID_1"},
+  {title:"Photo 2", link:"https://drive.google.com/uc?export=view&id=YOUR_PHOTO_FILE_ID_2"}
+];
+
+const videoGrid = document.getElementById('videoGrid');
+videos.forEach(item => {
+  const card = document.createElement('div');
+  card.className='card';
+  const iframe = document.createElement('iframe');
+  iframe.src=item.link; iframe.allowFullscreen=true;
+  const title = document.createElement('div'); title.className='title'; title.textContent=item.title;
+  card.appendChild(iframe); card.appendChild(title); videoGrid.appendChild(card);
+});
+
+const photoGrid = document.getElementById('photoGrid');
+photos.forEach(item => {
+  const card = document.createElement('div');
+  card.className='card';
+  const img = document.createElement('img'); img.src=item.link;
+  const title = document.createElement('div'); title.className='title'; title.textContent=item.title;
+  card.appendChild(img); card.appendChild(title); photoGrid.appendChild(card);
+});
 </script>
 
 </body>
