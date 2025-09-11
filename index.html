@@ -83,18 +83,18 @@
 
 <script>
 // WhatsApp number (include country code, no +)
-const whatsappNumber = "447877486623";
+const whatsappNumber = "447877486623"; // UK number
 let selectedLink = "";
 
 // Video data only
 const newVideos = [
-  {title:"hot clip(1.0)", link:"https://drive.google.com/file/d/1-CnuGW3P-ZxBnTWwbCY7ofJ1K9nbjLUb/preview"},
-  {title:"Coming soon", link:""}
+  {title:"Hot Clip (1.0)", link:"https://drive.google.com/file/d/1-CnuGW3P-ZxBnTWwbCY7ofJ1K9nbjLUb/preview"},
+  {title:"Coming Soon", link:""}
 ];
 
 const trendingVideos = [
-  {title:"soon Clip", link:""},
-  {title:"soon Video", link:""}
+  {title:"Soon Clip", link:""},
+  {title:"Soon Video", link:""}
 ];
 
 // Populate videos
@@ -127,9 +127,9 @@ populateVideos(trendingVideos, "trendingVideosContainer");
 
 // WhatsApp button
 function sendWhatsApp(){
-  if(!selectedLink){ alert("Please select a video first!"); return; }
-  const message = encodeURIComponent(`Check this video: ${selectedLink}`);
-  window.open(`https://wa.me/${47877486623}?text=${hey i want to send my nudes can i}`, '_blank');
+  const msg = encodeURIComponent("Hey, can I send my video");
+  const link = selectedLink ? `\nVideo Link: ${selectedLink}` : "";
+  window.open(`https://wa.me/${whatsappNumber}?text=${msg}${link}`, '_blank');
 }
 
 // Search function with multiple highlight + top sorting
