@@ -3,113 +3,165 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Free2Free — Reels</title>
+<title>Free2Free — Videos</title>
 <style>
-body {margin:0; font-family:sans-serif; background:#111; color:#fff; overflow-x:hidden;}
-header, footer {background:#222; text-align:center; padding:15px;}
-header {position:sticky; top:0; z-index:100;}
-.btn-header {padding:8px 12px; background:#ff6b6b; color:#111; border:none; border-radius:6px; cursor:pointer;}
-.reel-container {display:flex; flex-direction:column; scroll-snap-type: y mandatory; overflow-y: scroll; height:calc(100vh - 60px);}
-.reel {scroll-snap-align: start; min-height:100vh; display:flex; justify-content:center; align-items:center; flex-direction:column; padding:20px;}
-.reel iframe, .reel img {max-width:100%; max-height:80vh; border-radius:10px; margin-bottom:10px;}
-.reel .title {font-size:18px; font-weight:bold; text-align:center; color:#ff6b6b;}
-.modal {display:flex; position:fixed; z-index:500; left:0; top:0; width:100%; height:100%; justify-content:center; align-items:center; background:rgba(0,0,0,0.9);}
-.modal-content {background:#222; padding:30px; border-radius:10px; text-align:center; color:#fff; max-width:400px;}
-.age-btn, .submit-btn, .btn-header {padding:10px 20px; margin:10px; border:none; border-radius:6px; background:#ff6b6b; color:#111; cursor:pointer; font-weight:bold;}
-.close {position:absolute; top:10px; right:20px; font-size:25px; cursor:pointer;}
+  body {margin:0; font-family:sans-serif; background:#111; color:#fff;}
+  header {background:#222; display:flex; justify-content:space-between; align-items:center; padding:15px; position:sticky; top:0; z-index:100;}
+  .btn-google {background:#fff; color:#444; border:none; padding:8px 14px; border-radius:6px; cursor:pointer; font-weight:bold; display:flex; align-items:center; gap:8px;}
+  .btn-google img {width:18px;}
+  .search-bar {margin:10px auto; display:flex; justify-content:center;}
+  .search-bar input {width:80%; padding:8px 12px; border-radius:6px; border:none; font-size:16px;}
+  .section {padding:20px;}
+  .section-title {font-size:20px; font-weight:bold; color:#ff6b6b; margin-bottom:12px;}
+  .grid-container {display:grid; grid-template-columns:repeat(auto-fill, minmax(250px,1fr)); gap:16px;}
+  .card {background:#222; border-radius:12px; padding:12px; display:flex; flex-direction:column; align-items:center; box-shadow:0 4px 10px rgba(0,0,0,0.5); transition:transform 0.2s, border 0.3s; cursor:pointer;}
+  .card:hover {transform:scale(1.02);}
+  .card iframe {width:100%; border-radius:10px; margin-bottom:10px;}
+  .title {font-size:16px; font-weight:bold; color:#ff6b6b; text-align:center;}
+  footer {background:#222; text-align:center; padding:15px; position:relative;}
+  
+  /* Floating WhatsApp Button */
+  .floating-whatsapp {
+    position:fixed;
+    bottom:20px;
+    right:20px;
+    width:60px;
+    height:60px;
+    background:#25D366;
+    border-radius:50%;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    cursor:pointer;
+    box-shadow:0 4px 10px rgba(0,0,0,0.5);
+    z-index:999;
+    transition: transform 0.2s;
+  }
+  .floating-whatsapp:hover {transform:scale(1.1);}
+  .floating-whatsapp img {width:32px; height:32px;}
+  .highlight {border: 3px solid yellow; animation: blink 1s infinite;}
+  @keyframes blink {
+    0%,50%,100% {border-color: yellow;}
+    25%,75% {border-color: #ff6b6b;}
+  }
 </style>
 </head>
 <body>
 
 <header>
-  Free2Free
-  <button class="btn-header" onclick="openFeedback()">Feedback / Upload</button>
+  <div style="font-size:20px; font-weight:bold;">Free2Free</div>
+  <button class="btn-google">
+    <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google Logo">
+    Login with Google
+  </button>
 </header>
 
-<!-- Age Verification Modal -->
-<div id="ageModal" class="modal">
-  <div class="modal-content">
-    <h2>Are you 13+?</h2>
-    <button class="age-btn" onclick="acceptAge()">Yes</button>
-    <button class="age-btn" onclick="denyAge()">No</button>
-  </div>
+<!-- Search bar -->
+<div class="search-bar">
+  <input type="text" id="searchInput" placeholder="Search video by title..." onkeyup="searchVideos()">
 </div>
 
-<!-- Reel Container -->
-<div id="reelContainer" class="reel-container" style="display:none;"></div>
+<!-- Sections -->
+<div class="section" id="newVideosSection">
+  <div class="section-title">New Videos</div>
+  <div class="grid-container" id="newVideosContainer"></div>
+</div>
+
+<div class="section" id="trendingVideosSection">
+  <div class="section-title">Trending Videos</div>
+  <div class="grid-container" id="trendingVideosContainer"></div>
+</div>
 
 <footer>
   &copy; 2025 Free2Free
 </footer>
 
-<!-- Feedback Modal -->
-<div id="feedbackModal" class="modal" style="display:none;">
-  <div class="modal-content">
-    <span class="close" onclick="closeFeedback()">&times;</span>
-    <h2>Submit Feedback / Complaint / Request</h2>
-    <form action="https://formspree.io/f/mwpnyrar" method="POST" enctype="multipart/form-data">
-      <label>Email:
-        <input type="email" name="email" placeholder="Enter your email" required>
-      </label>
-      <label>Type:
-        <select name="type" required>
-          <option value="">-- Select --</option>
-          <option value="Feedback">Feedback</option>
-          <option value="Complaint">Complaint</option>
-          <option value="Request">Request for more videos</option>
-        </select>
-      </label>
-      <label>Message:
-        <textarea name="message" placeholder="Write your message..." rows="5" required></textarea>
-      </label>
-      <label>Upload File (optional):
-        <input type="file" name="upload">
-      </label>
-      <button type="submit" class="submit-btn">Send</button>
-    </form>
-  </div>
+<!-- Floating WhatsApp Button -->
+<div class="floating-whatsapp" onclick="sendWhatsApp()">
+  <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp">
 </div>
 
 <script>
-// Age Verification
-function acceptAge(){ 
-  document.getElementById('ageModal').style.display='none';
-  document.getElementById('reelContainer').style.display='flex';
-}
-function denyAge(){ 
-  alert("You must be 13+ to access this site."); 
-  window.location.href="about:blank"; 
-}
+// WhatsApp number (include country code, no +)
+const whatsappNumber = "911234567890";
+let selectedLink = "";
 
-// Feedback modal
-function openFeedback(){document.getElementById('feedbackModal').style.display='flex';}
-function closeFeedback(){document.getElementById('feedbackModal').style.display='none';}
-window.onclick = function(event){if(event.target == document.getElementById('feedbackModal')){closeFeedback();}}
-
-// Reel Data (Videos & Photos)
-const reels = [
-  {type:"video", title:"Sample Video", link:"https://drive.google.com/file/d/1-CnuGW3P-ZxBnTWwbCY7ofJ1K9nbjLUb/preview"},
-  {type:"photo", title:"Sample Photo", link:"https://drive.google.com/uc?export=view&id=1-W9BiepNS3es_T0LDeagNux9RUzN2k-B"}
-  // Add more here
+// Video data only
+const newVideos = [
+  {title:"hot clip(1.0)", link:"https://drive.google.com/file/d/1-CnuGW3P-ZxBnTWwbCY7ofJ1K9nbjLUb/preview"},
+  {title:"Coming soon", link:""}
 ];
 
-const container = document.getElementById('reelContainer');
-reels.forEach(item=>{
-  const div = document.createElement('div');
-  div.className='reel';
-  if(item.type==="video"){
+const trendingVideos = [
+  {title:"soon Clip", link:""},
+  {title:"soon Video", link:""}
+];
+
+// Populate videos
+function populateVideos(videos, containerId){
+  const container = document.getElementById(containerId);
+  container.innerHTML="";
+  videos.forEach(item=>{
+    const card = document.createElement('div');
+    card.className='card';
+
     const iframe = document.createElement('iframe');
     iframe.src=item.link; iframe.allowFullscreen=true;
-    div.appendChild(iframe);
-  } else if(item.type==="photo"){
-    const img = document.createElement('img');
-    img.src=item.link; img.alt=item.title;
-    div.appendChild(img);
+    card.appendChild(iframe);
+
+    const title = document.createElement('div');
+    title.className='title';
+    title.textContent=item.title;
+    card.appendChild(title);
+
+    // Select video for WhatsApp
+    card.onclick = ()=>{ selectedLink = item.link; alert("Video selected! Click WhatsApp button to send."); }
+
+    container.appendChild(card);
+  });
+}
+
+// Initial populate
+populateVideos(newVideos, "newVideosContainer");
+populateVideos(trendingVideos, "trendingVideosContainer");
+
+// WhatsApp button
+function sendWhatsApp(){
+  if(!selectedLink){ alert("Please select a video first!"); return; }
+  const message = encodeURIComponent(`Check this video: ${selectedLink}`);
+  window.open(`https://wa.me/${whatsappNumber}?text=${message}`, '_blank');
+}
+
+// Search function with multiple highlight + top sorting
+function searchVideos(){
+  const query = document.getElementById("searchInput").value.toLowerCase();
+  const allVideos = [...newVideos, ...trendingVideos];
+
+  if(query.trim() === ""){
+    populateVideos(newVideos, "newVideosContainer");
+    populateVideos(trendingVideos, "trendingVideosContainer");
+    return;
   }
-  const title = document.createElement('div'); title.className='title'; title.textContent=item.title;
-  div.appendChild(title);
-  container.appendChild(div);
-});
+
+  const matched = allVideos.filter(v=>v.title.toLowerCase().includes(query));
+  const unmatched = allVideos.filter(v=>!v.title.toLowerCase().includes(query));
+
+  // Put matched videos on top
+  populateVideos([...matched, ...unmatched], "newVideosContainer");
+  populateVideos([], "trendingVideosContainer");
+
+  // Highlight matched videos
+  setTimeout(()=>{
+    const cards = document.querySelectorAll('.card');
+    cards.forEach((card, index)=>{
+      if(index < matched.length){
+        card.classList.add('highlight');
+      }
+    });
+    // Scroll first match into view
+    if(cards.length>0) cards[0].scrollIntoView({behavior:'smooth', block:'start'});
+  },100);
+}
 </script>
 
 </body>
