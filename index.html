@@ -16,79 +16,24 @@
   .grid-container {display:grid; grid-template-columns:repeat(auto-fill, minmax(250px,1fr)); gap:16px;}
   .card {background:#222; border-radius:12px; padding:12px; display:flex; flex-direction:column; align-items:center; box-shadow:0 4px 10px rgba(0,0,0,0.5); transition:transform 0.2s, border 0.3s; cursor:pointer;}
   .card:hover {transform:scale(1.02);}
-  .card iframe {width:100%; border-radius:10px; margin-bottom:10px;}
+  .card iframe {width:100%; border-radius:10px; margin-bottom:10px; aspect-ratio:16/9;}
   .title {font-size:16px; font-weight:bold; color:#ff6b6b; text-align:center;}
   footer {background:#222; text-align:center; padding:15px; position:relative;}
-  
+
   /* Floating Buttons */
-  .floating-btn {
-    position:fixed;
-    right:20px;
-    width:60px;
-    height:60px;
-    border-radius:50%;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    cursor:pointer;
-    box-shadow:0 4px 10px rgba(0,0,0,0.5);
-    z-index:999;
-    transition: transform 0.2s;
-    font-size:28px;
-  }
+  .floating-btn {position:fixed; right:20px; width:60px; height:60px; border-radius:50%; display:flex; justify-content:center; align-items:center; cursor:pointer; box-shadow:0 4px 10px rgba(0,0,0,0.5); z-index:999; transition: transform 0.2s; font-size:28px;}
   .floating-btn:hover {transform:scale(1.1);}
   .floating-whatsapp {background:#25D366; bottom:20px;}
   .floating-feedback {background:#ff9800; bottom:90px;} /* Above WhatsApp */
 
   /* Feedback Modal */
-  .modal {
-    display:none;
-    position:fixed;
-    z-index:1000;
-    left:0; top:0;
-    width:100%; height:100%;
-    background:rgba(0,0,0,0.6);
-    justify-content:center;
-    align-items:center;
-  }
-  .modal-content {
-    background:#222;
-    padding:20px;
-    border-radius:12px;
-    width:90%; max-width:400px;
-    color:#fff;
-    box-shadow:0 4px 10px rgba(0,0,0,0.5);
-    animation:fadeIn 0.3s ease;
-  }
+  .modal {display:none; position:fixed; z-index:1000; left:0; top:0; width:100%; height:100%; background:rgba(0,0,0,0.6); justify-content:center; align-items:center;}
+  .modal-content {background:#222; padding:20px; border-radius:12px; width:90%; max-width:400px; color:#fff; box-shadow:0 4px 10px rgba(0,0,0,0.5); animation:fadeIn 0.3s ease;}
   .modal-content h2 {margin-top:0; color:#ff9800;}
-  .modal-content input, .modal-content textarea {
-    width:100%;
-    padding:10px;
-    margin:8px 0;
-    border:none;
-    border-radius:6px;
-    font-size:14px;
-  }
-  .modal-content button {
-    background:#ff9800;
-    border:none;
-    padding:10px;
-    width:100%;
-    border-radius:6px;
-    font-weight:bold;
-    cursor:pointer;
-    color:#fff;
-  }
-  .close-btn {
-    float:right;
-    font-size:20px;
-    cursor:pointer;
-    color:#fff;
-  }
-  @keyframes fadeIn {
-    from {opacity:0; transform:scale(0.9);}
-    to {opacity:1; transform:scale(1);}
-  }
+  .modal-content input, .modal-content textarea {width:100%; padding:10px; margin:8px 0; border:none; border-radius:6px; font-size:14px;}
+  .modal-content button {background:#ff9800; border:none; padding:10px; width:100%; border-radius:6px; font-weight:bold; cursor:pointer; color:#fff;}
+  .close-btn {float:right; font-size:20px; cursor:pointer; color:#fff;}
+  @keyframes fadeIn {from {opacity:0; transform:scale(0.9);} to {opacity:1; transform:scale(1);}}
   .highlight {border: 3px solid yellow; animation: blink 1s infinite;}
   @keyframes blink {0%,50%,100% {border-color: yellow;}25%,75% {border-color: #ff6b6b;}}
 </style>
@@ -176,31 +121,36 @@
 
 <script>
 // WhatsApp number (include country code, no +)
-const whatsappNumber = ""; // UK number
+const whatsappNumber = ""; 
 let selectedLink = "";
 
-// Video data
+// Video data with Google Drive preview links
 const newVideos = [
   {title:"Hot Clip (1.0)", link:"https://drive.google.com/file/d/1-CnuGW3P-ZxBnTWwbCY7ofJ1K9nbjLUb/preview"},
-  {title:"Full video porn (2.0)", link:"https://drive.google.com/file/d/1-0jvwyHbAuaPoRiJDJhVX08_RqWhAnAZ/view?usp=drivesdk"}
+  {title:"Full Video (2.0)", link:"https://drive.google.com/file/d/1-0jvwyHbAuaPoRiJDJhVX08_RqWhAnAZ/preview"}
 ];
 const trendingVideos = [
   {title:"coming soon", link:""},
   {title:"coming soon", link:""}
 ];
 
-// Populate videos
 function populateVideos(videos, containerId){
   const container = document.getElementById(containerId);
   container.innerHTML="";
   videos.forEach(item=>{
     const card = document.createElement('div');
     card.className='card';
-    const iframe = document.createElement('iframe');
-    iframe.src=item.link; iframe.allowFullscreen=true;
-    card.appendChild(iframe);
-    const title = document.createElement('div');
-    title.className='title'; title.textContent=item.title;
+    if(item.link){
+      const iframe = document.createElement('iframe');
+      iframe.src=item.link; iframe.allowFullscreen=true;
+      card.appendChild(iframe);
+    } else {
+      const div = document.createElement('div');
+      div.textContent="Video coming soon";
+      div.style.padding="50px"; div.style.textAlign="center"; div.style.color="#aaa";
+      card.appendChild(div);
+    }
+    const title = document.createElement('div'); title.className='title'; title.textContent=item.title;
     card.appendChild(title);
     card.onclick = ()=>{ selectedLink = item.link; alert("Video selected! Click WhatsApp button to send."); }
     container.appendChild(card);
@@ -213,58 +163,4 @@ populateVideos(trendingVideos, "trendingVideosContainer");
 function sendWhatsApp(){
   const msg = encodeURIComponent("Hey, can I send my video");
   const link = selectedLink ? `\nVideo Link: ${selectedLink}` : "";
-  window.open(`https://wa.me/${whatsappNumber}?text=${msg}${link}`, '_blank');
-}
-
-// Feedback modal
-function openFeedback(){ document.getElementById("feedbackModal").style.display="flex"; }
-function closeFeedback(){ document.getElementById("feedbackModal").style.display="none"; }
-const feedbackForm = document.getElementById("feedbackForm");
-feedbackForm.addEventListener("submit", async function(e) {
-  e.preventDefault();
-  const formData = new FormData(feedbackForm);
-  try {
-    let res = await fetch(feedbackForm.action, {
-      method: feedbackForm.method, body: formData, headers: { 'Accept': 'application/json' }
-    });
-    if (res.ok) {
-      feedbackForm.style.display = "none";
-      document.getElementById("feedbackSuccess").style.display = "block";
-      setTimeout(()=>{ closeFeedback(); }, 3000);
-    } else { alert("⚠️ Something went wrong. Please try again."); }
-  } catch (err) { alert("⚠️ Network error. Please check your connection."); }
-});
-
-// Search
-function searchVideos(){
-  const query = document.getElementById("searchInput").value.toLowerCase();
-  const allVideos = [...newVideos, ...trendingVideos];
-  if(query.trim() === ""){
-    populateVideos(newVideos, "newVideosContainer");
-    populateVideos(trendingVideos, "trendingVideosContainer");
-    return;
-  }
-  const matched = allVideos.filter(v=>v.title.toLowerCase().includes(query));
-  const unmatched = allVideos.filter(v=>!v.title.toLowerCase().includes(query));
-  populateVideos([...matched, ...unmatched], "newVideosContainer");
-  populateVideos([], "trendingVideosContainer");
-  setTimeout(()=>{
-    const cards = document.querySelectorAll('.card');
-    cards.forEach((card,index)=>{ if(index<matched.length){ card.classList.add('highlight'); } });
-    if(cards.length>0) cards[0].scrollIntoView({behavior:'smooth', block:'start'});
-  },100);
-}
-
-// Hamburger menu toggle
-const hamburgerIcon = document.getElementById('hamburgerIcon');
-const menuContent = document.getElementById('menuContent');
-hamburgerIcon.addEventListener('click', () => {
-  menuContent.style.display = menuContent.style.display === 'flex' ? 'none' : 'flex';
-  menuContent.style.flexDirection = 'column';
-});
-
-// Open games in modal
-function openGame(gameName){
-  const gameModal = document.createElement('div');
-  gameModal.id = 'gameModal';
-  gameModal.style.cssText = "position:fixed;top:
+  window.open(`https://wa.me/${whatsapp
