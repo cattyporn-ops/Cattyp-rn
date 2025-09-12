@@ -34,9 +34,9 @@
     box-shadow:0 4px 10px rgba(0,0,0,0.5);
     z-index:999;
     transition: transform 0.2s;
+    font-size:28px;
   }
   .floating-btn:hover {transform:scale(1.1);}
-  .floating-btn img {width:32px; height:32px;}
 
   .floating-whatsapp {background:#25D366; bottom:20px;}
   .floating-feedback {background:#ff9800; bottom:90px;} /* Above WhatsApp */
@@ -130,12 +130,12 @@
 
 <!-- Floating WhatsApp Button -->
 <div class="floating-btn floating-whatsapp" onclick="sendWhatsApp()">
-  <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp">
+  <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp" style="width:32px; height:32px;">
 </div>
 
 <!-- Floating Feedback Button -->
 <div class="floating-btn floating-feedback" onclick="openFeedback()">
-  <img src="https://share.google/images/jsYDKMyrOQzIO9kLy" alt="Fek">
+  💬
 </div>
 
 <!-- Feedback Modal -->
