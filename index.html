@@ -5,33 +5,33 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Free2Free — Videos</title>
 <style>
-  body {margin:0; font-family:sans-serif; background:#111; color:#fff;}
-  header {background:#222; display:flex; justify-content:space-between; align-items:center; padding:15px; position:sticky; top:0; z-index:100;}
-  .btn-google {background:#fff; color:#444; border:none; padding:8px 14px; border-radius:6px; cursor:pointer; font-weight:bold; display:flex; align-items:center; gap:8px;}
-  .btn-google img {width:18px;}
-  .search-bar {margin:10px auto; display:flex; justify-content:center;}
-  .search-bar input {width:80%; padding:8px 12px; border-radius:6px; border:none; font-size:16px;}
-  .section {padding:20px;}
-  .section-title {font-size:20px; font-weight:bold; color:#ff6b6b; margin-bottom:12px;}
-  .grid-container {display:grid; grid-template-columns:repeat(auto-fill, minmax(250px,1fr)); gap:16px;}
-  .card {background:#222; border-radius:12px; padding:12px; display:flex; flex-direction:column; align-items:center; box-shadow:0 4px 10px rgba(0,0,0,0.5); transition:transform 0.2s, border 0.3s; cursor:pointer;}
-  .card:hover {transform:scale(1.02);}
-  .card iframe {width:100%; border-radius:10px; margin-bottom:10px; aspect-ratio:16/9;}
-  .title {font-size:16px; font-weight:bold; color:#ff6b6b; text-align:center;}
-  footer {background:#222; text-align:center; padding:15px; position:relative;}
-  .floating-btn {position:fixed; right:20px; width:60px; height:60px; border-radius:50%; display:flex; justify-content:center; align-items:center; cursor:pointer; box-shadow:0 4px 10px rgba(0,0,0,0.5); z-index:999; transition: transform 0.2s; font-size:28px;}
-  .floating-btn:hover {transform:scale(1.1);}
-  .floating-whatsapp {background:#25D366; bottom:20px;}
-  .floating-feedback {background:#ff9800; bottom:90px;} 
-  .modal {display:none; position:fixed; z-index:1000; left:0; top:0; width:100%; height:100%; background:rgba(0,0,0,0.6); justify-content:center; align-items:center;}
-  .modal-content {background:#222; padding:20px; border-radius:12px; width:90%; max-width:400px; color:#fff; box-shadow:0 4px 10px rgba(0,0,0,0.5); animation:fadeIn 0.3s ease;}
-  .modal-content h2 {margin-top:0; color:#ff9800;}
-  .modal-content input, .modal-content textarea {width:100%; padding:10px; margin:8px 0; border:none; border-radius:6px; font-size:14px;}
-  .modal-content button {background:#ff9800; border:none; padding:10px; width:100%; border-radius:6px; font-weight:bold; cursor:pointer; color:#fff;}
-  .close-btn {float:right; font-size:20px; cursor:pointer; color:#fff;}
-  @keyframes fadeIn {from {opacity:0; transform:scale(0.9);} to {opacity:1; transform:scale(1);}}
-  .highlight {border: 3px solid yellow; animation: blink 1s infinite;}
-  @keyframes blink {0%,50%,100% {border-color: yellow;}25%,75% {border-color: #ff6b6b;}}
+body {margin:0; font-family:sans-serif; background:#111; color:#fff;}
+header {background:#222; display:flex; justify-content:space-between; align-items:center; padding:15px; position:sticky; top:0; z-index:100;}
+.btn-google {background:#fff; color:#444; border:none; padding:8px 14px; border-radius:6px; cursor:pointer; font-weight:bold; display:flex; align-items:center; gap:8px;}
+.btn-google img {width:18px;}
+.search-bar {margin:10px auto; display:flex; justify-content:center;}
+.search-bar input {width:80%; padding:8px 12px; border-radius:6px; border:none; font-size:16px;}
+.section {padding:20px;}
+.section-title {font-size:20px; font-weight:bold; color:#ff6b6b; margin-bottom:12px;}
+.grid-container {display:grid; grid-template-columns:repeat(auto-fill, minmax(250px,1fr)); gap:16px;}
+.card {background:#222; border-radius:12px; padding:12px; display:flex; flex-direction:column; align-items:center; box-shadow:0 4px 10px rgba(0,0,0,0.5); transition:transform 0.2s, border 0.3s; cursor:pointer;}
+.card:hover {transform:scale(1.02);}
+.card video {width:100%; border-radius:10px; margin-bottom:10px; aspect-ratio:16/9;}
+.title {font-size:16px; font-weight:bold; color:#ff6b6b; text-align:center;}
+footer {background:#222; text-align:center; padding:15px; position:relative;}
+.floating-btn {position:fixed; right:20px; width:60px; height:60px; border-radius:50%; display:flex; justify-content:center; align-items:center; cursor:pointer; box-shadow:0 4px 10px rgba(0,0,0,0.5); z-index:999; transition: transform 0.2s; font-size:28px;}
+.floating-btn:hover {transform:scale(1.1);}
+.floating-whatsapp {background:#25D366; bottom:20px;}
+.floating-feedback {background:#ff9800; bottom:90px;} 
+.modal {display:none; position:fixed; z-index:1000; left:0; top:0; width:100%; height:100%; background:rgba(0,0,0,0.6); justify-content:center; align-items:center;}
+.modal-content {background:#222; padding:20px; border-radius:12px; width:90%; max-width:400px; color:#fff; box-shadow:0 4px 10px rgba(0,0,0,0.5); animation:fadeIn 0.3s ease;}
+.modal-content h2 {margin-top:0; color:#ff9800;}
+.modal-content input, .modal-content textarea {width:100%; padding:10px; margin:8px 0; border:none; border-radius:6px; font-size:14px;}
+.modal-content button {background:#ff9800; border:none; padding:10px; width:100%; border-radius:6px; font-weight:bold; cursor:pointer; color:#fff;}
+.close-btn {float:right; font-size:20px; cursor:pointer; color:#fff;}
+@keyframes fadeIn {from {opacity:0; transform:scale(0.9);} to {opacity:1; transform:scale(1);}}
+.highlight {border: 3px solid yellow; animation: blink 1s infinite;}
+@keyframes blink {0%,50%,100% {border-color: yellow;}25%,75% {border-color: #ff6b6b;}}
 </style>
 </head>
 <body>
@@ -87,91 +87,33 @@
 const whatsappNumber = ""; 
 let selectedLink = "";
 
+// New Videos (20) with first 2 replaced with your Google Drive links
 const newVideos = [
-  {title:"Hot Clip (1.0)", link:"https://drive.google.com/file/d/1-CnuGW3P-ZxBnTWwbCY7ofJ1K9nbjLUb/preview"},
-  {title:"Full Video (2.0)", link:"https://drive.google.com/file/d/1-0jvwyHbAuaPoRiJDJhVX08_RqWhAnAZ/preview"}
+  {title:"Hot Clip (1.0)", link:"https://drive.google.com/uc?export=download&id=1-CnuGW3P-ZxBnTWwbCY7ofJ1K9nbjLUb"},
+  {title:"Full video porn (2.0)", link:"https://drive.google.com/uc?export=download&id=1-0jvwyHbAuaPoRiJDJhVX08_RqWhAnAZ"},
+  {title:"New Video 3", link:"https://drive.google.com/uc?export=download&id=FILE_ID3"},
+  {title:"New Video 4", link:"https://drive.google.com/uc?export=download&id=FILE_ID4"},
+  {title:"New Video 5", link:"https://drive.google.com/uc?export=download&id=FILE_ID5"},
+  {title:"New Video 6", link:"https://drive.google.com/uc?export=download&id=FILE_ID6"},
+  {title:"New Video 7", link:"https://drive.google.com/uc?export=download&id=FILE_ID7"},
+  {title:"New Video 8", link:"https://drive.google.com/uc?export=download&id=FILE_ID8"},
+  {title:"New Video 9", link:"https://drive.google.com/uc?export=download&id=FILE_ID9"},
+  {title:"New Video 10", link:"https://drive.google.com/uc?export=download&id=FILE_ID10"},
+  {title:"New Video 11", link:"https://drive.google.com/uc?export=download&id=FILE_ID11"},
+  {title:"New Video 12", link:"https://drive.google.com/uc?export=download&id=FILE_ID12"},
+  {title:"New Video 13", link:"https://drive.google.com/uc?export=download&id=FILE_ID13"},
+  {title:"New Video 14", link:"https://drive.google.com/uc?export=download&id=FILE_ID14"},
+  {title:"New Video 15", link:"https://drive.google.com/uc?export=download&id=FILE_ID15"},
+  {title:"New Video 16", link:"https://drive.google.com/uc?export=download&id=FILE_ID16"},
+  {title:"New Video 17", link:"https://drive.google.com/uc?export=download&id=FILE_ID17"},
+  {title:"New Video 18", link:"https://drive.google.com/uc?export=download&id=FILE_ID18"},
+  {title:"New Video 19", link:"https://drive.google.com/uc?export=download&id=FILE_ID19"},
+  {title:"New Video 20", link:"https://drive.google.com/uc?export=download&id=FILE_ID20"}
 ];
+
+// Trending Videos (10)
 const trendingVideos = [
-  {title:"Coming Soon", link:""},
-  {title:"Coming Soon", link:""}
-];
-
-function populateVideos(videos, containerId){
-  const container = document.getElementById(containerId);
-  container.innerHTML="";
-  videos.forEach(item=>{
-    const card = document.createElement('div');
-    card.className='card';
-    if(item.link){
-      const iframe = document.createElement('iframe');
-      iframe.src = ""; // empty initially
-      iframe.allowFullscreen = true;
-      iframe.setAttribute('allow', 'autoplay; fullscreen');
-      card.appendChild(iframe);
-
-      card.onclick = () => {
-        iframe.src = item.link + "?autoplay=1"; // autoplay on click
-        selectedLink = item.link;
-        alert("Video selected! Playing now. Click WhatsApp button to send.");
-      };
-    } else {
-      const div = document.createElement('div');
-      div.textContent="Video coming soon"; div.style.padding="50px"; div.style.textAlign="center"; div.style.color="#aaa";
-      card.appendChild(div);
-    }
-    const title = document.createElement('div'); title.className='title'; title.textContent=item.title;
-    card.appendChild(title);
-    container.appendChild(card);
-  });
-}
-
-populateVideos(newVideos, "newVideosContainer");
-populateVideos(trendingVideos, "trendingVideosContainer");
-
-function sendWhatsApp(){
-  const msg = encodeURIComponent("Hey, can I send my video");
-  const link = selectedLink ? `\nVideo Link: ${selectedLink}` : "";
-  window.open(`https://wa.me/${whatsappNumber}?text=${msg}${link}`, '_blank');
-}
-
-function openFeedback(){ document.getElementById("feedbackModal").style.display="flex"; }
-function closeFeedback(){ document.getElementById("feedbackModal").style.display="none"; }
-
-const feedbackForm = document.getElementById("feedbackForm");
-feedbackForm.addEventListener("submit", async function(e) {
-  e.preventDefault();
-  const formData = new FormData(feedbackForm);
-  try {
-    let res = await fetch(feedbackForm.action, {method: feedbackForm.method, body: formData, headers: { 'Accept': 'application/json' }});
-    if (res.ok) {
-      feedbackForm.style.display = "none";
-      document.getElementById("feedbackSuccess").style.display = "block";
-      setTimeout(()=>{ closeFeedback(); }, 3000);
-    } else { alert("⚠️ Something went wrong. Please try again."); }
-  } catch (err) { alert("⚠️ Network error. Please check your connection."); }
-}
-
-);
-
-function searchVideos(){
-  const query = document.getElementById("searchInput").value.toLowerCase();
-  const allVideos = [...newVideos, ...trendingVideos];
-  if(query.trim() === ""){
-    populateVideos(newVideos, "newVideosContainer");
-    populateVideos(trendingVideos, "trendingVideosContainer");
-    return;
-  }
-  const matched = allVideos.filter(v=>v.title.toLowerCase().includes(query));
-  const unmatched = allVideos.filter(v=>!v.title.toLowerCase().includes(query));
-  populateVideos([...matched, ...unmatched], "newVideosContainer");
-  populateVideos([], "trendingVideosContainer");
-  setTimeout(()=>{
-    const cards = document.querySelectorAll('.card');
-    cards.forEach((card,index)=>{ if(index<matched.length){ card.classList.add('highlight'); } });
-    if(cards.length>0) cards[0].scrollIntoView({behavior:'smooth', block:'start'});
-  },100);
-}
-</script>
-
-</body>
-</html>
+  {title:"Trending 1", link:"https://drive.google.com/uc?export=download&id=FILE_T1"},
+  {title:"Trending 2", link:"https://drive.google.com/uc?export=download&id=FILE_T2"},
+  {title:"Trending 3", link:"https://drive.google.com/uc?export=download&id=FILE_T3"},
+  {title:"Trending 4", link:"https://drive.google.com/uc?export=
