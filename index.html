@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Free2Free — Videos</title>
+<title>Free2Free — Videos & Games</title>
 <style>
   body {margin:0; font-family:sans-serif; background:#111; color:#fff;}
   header {background:#222; display:flex; justify-content:space-between; align-items:center; padding:15px; position:sticky; top:0; z-index:100;}
@@ -37,7 +37,6 @@
     font-size:28px;
   }
   .floating-btn:hover {transform:scale(1.1);}
-
   .floating-whatsapp {background:#25D366; bottom:20px;}
   .floating-feedback {background:#ff9800; bottom:90px;} /* Above WhatsApp */
 
@@ -90,12 +89,8 @@
     from {opacity:0; transform:scale(0.9);}
     to {opacity:1; transform:scale(1);}
   }
-
   .highlight {border: 3px solid yellow; animation: blink 1s infinite;}
-  @keyframes blink {
-    0%,50%,100% {border-color: yellow;}
-    25%,75% {border-color: #ff6b6b;}
-  }
+  @keyframes blink {0%,50%,100% {border-color: yellow;}25%,75% {border-color: #ff6b6b;}}
 </style>
 </head>
 <body>
@@ -108,12 +103,24 @@
   </button>
 </header>
 
+<!-- Hamburger Menu -->
+<div id="hamburgerMenu" style="position:fixed; top:20px; left:20px; z-index:1000;">
+  <div id="hamburgerIcon" style="cursor:pointer; width:30px; height:25px; display:flex; flex-direction:column; justify-content:space-between;">
+    <span style="display:block; height:4px; background:#fff; border-radius:2px;"></span>
+    <span style="display:block; height:4px; background:#fff; border-radius:2px;"></span>
+    <span style="display:block; height:4px; background:#fff; border-radius:2px;"></span>
+  </div>
+  <div id="menuContent" style="display:none; position:absolute; top:35px; left:0; background:#222; border-radius:8px; padding:10px; width:120px; box-shadow:0 4px 10px rgba(0,0,0,0.5);">
+    <button onclick="openGame('shooting')" style="width:100%; padding:8px; border:none; border-radius:6px; background:#ff6b6b; color:#fff; cursor:pointer; font-weight:bold;">Game</button>
+  </div>
+</div>
+
 <!-- Search bar -->
 <div class="search-bar">
   <input type="text" id="searchInput" placeholder="Search video by title..." onkeyup="searchVideos()">
 </div>
 
-<!-- Sections -->
+<!-- Video Sections -->
 <div class="section" id="newVideosSection">
   <div class="section-title">New Videos</div>
   <div class="grid-container" id="newVideosContainer"></div>
@@ -124,19 +131,31 @@
   <div class="grid-container" id="trendingVideosContainer"></div>
 </div>
 
+<!-- Games Section -->
+<div class="section" id="gamesSection">
+  <div class="section-title">Games</div>
+  <div class="grid-container" id="gamesContainer">
+    <div class="card">
+      <button onclick="openGame('shooting')" style="padding:10px 20px; font-weight:bold; border:none; border-radius:8px; cursor:pointer; background:#ff6b6b; color:#fff;">Shooting Game</button>
+    </div>
+    <div class="card">
+      <button onclick="openGame('fighting')" style="padding:10px 20px; font-weight:bold; border:none; border-radius:8px; cursor:pointer; background:#ff6b6b; color:#fff;">Fighting Game</button>
+    </div>
+    <div class="card">
+      <button onclick="openGame('catchstars')" style="padding:10px 20px; font-weight:bold; border:none; border-radius:8px; cursor:pointer; background:#ff6b6b; color:#fff;">Catch Stars Game</button>
+    </div>
+  </div>
+</div>
+
 <footer>
   &copy; 2025 Free2Free
 </footer>
 
-<!-- Floating WhatsApp Button -->
+<!-- Floating Buttons -->
 <div class="floating-btn floating-whatsapp" onclick="sendWhatsApp()">
   <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp" style="width:32px; height:32px;">
 </div>
-
-<!-- Floating Feedback Button -->
-<div class="floating-btn floating-feedback" onclick="openFeedback()">
-  💬
-</div>
+<div class="floating-btn floating-feedback" onclick="openFeedback()">💬</div>
 
 <!-- Feedback Modal -->
 <div id="feedbackModal" class="modal">
@@ -160,12 +179,11 @@
 const whatsappNumber = ""; // UK number
 let selectedLink = "";
 
-// Video data only
+// Video data
 const newVideos = [
   {title:"Hot Clip (1.0)", link:"https://drive.google.com/file/d/1-CnuGW3P-ZxBnTWwbCY7ofJ1K9nbjLUb/preview"},
   {title:"Full video porn (2.0)", link:"https://drive.google.com/file/d/1-0jvwyHbAuaPoRiJDJhVX08_RqWhAnAZ/view?usp=drivesdk"}
 ];
-
 const trendingVideos = [
   {title:"coming soon", link:""},
   {title:"coming soon", link:""}
@@ -178,28 +196,20 @@ function populateVideos(videos, containerId){
   videos.forEach(item=>{
     const card = document.createElement('div');
     card.className='card';
-
     const iframe = document.createElement('iframe');
     iframe.src=item.link; iframe.allowFullscreen=true;
     card.appendChild(iframe);
-
     const title = document.createElement('div');
-    title.className='title';
-    title.textContent=item.title;
+    title.className='title'; title.textContent=item.title;
     card.appendChild(title);
-
-    // Select video for WhatsApp
     card.onclick = ()=>{ selectedLink = item.link; alert("Video selected! Click WhatsApp button to send."); }
-
     container.appendChild(card);
   });
 }
-
-// Initial populate
 populateVideos(newVideos, "newVideosContainer");
 populateVideos(trendingVideos, "trendingVideosContainer");
 
-// WhatsApp button
+// WhatsApp
 function sendWhatsApp(){
   const msg = encodeURIComponent("Hey, can I send my video");
   const link = selectedLink ? `\nVideo Link: ${selectedLink}` : "";
@@ -209,62 +219,52 @@ function sendWhatsApp(){
 // Feedback modal
 function openFeedback(){ document.getElementById("feedbackModal").style.display="flex"; }
 function closeFeedback(){ document.getElementById("feedbackModal").style.display="none"; }
-
-// Handle feedback form submission with AJAX
 const feedbackForm = document.getElementById("feedbackForm");
 feedbackForm.addEventListener("submit", async function(e) {
-  e.preventDefault(); // stop normal submission
+  e.preventDefault();
   const formData = new FormData(feedbackForm);
-  
   try {
     let res = await fetch(feedbackForm.action, {
-      method: feedbackForm.method,
-      body: formData,
-      headers: { 'Accept': 'application/json' }
+      method: feedbackForm.method, body: formData, headers: { 'Accept': 'application/json' }
     });
     if (res.ok) {
-      feedbackForm.style.display = "none"; // hide form
-      document.getElementById("feedbackSuccess").style.display = "block"; // show success msg
-      setTimeout(()=>{ closeFeedback(); }, 3000); // auto-close after 3s
-    } else {
-      alert("⚠️ Something went wrong. Please try again.");
-    }
-  } catch (err) {
-    alert("⚠️ Network error. Please check your connection.");
-  }
+      feedbackForm.style.display = "none";
+      document.getElementById("feedbackSuccess").style.display = "block";
+      setTimeout(()=>{ closeFeedback(); }, 3000);
+    } else { alert("⚠️ Something went wrong. Please try again."); }
+  } catch (err) { alert("⚠️ Network error. Please check your connection."); }
 });
 
-// Search function with multiple highlight + top sorting
+// Search
 function searchVideos(){
   const query = document.getElementById("searchInput").value.toLowerCase();
   const allVideos = [...newVideos, ...trendingVideos];
-
   if(query.trim() === ""){
     populateVideos(newVideos, "newVideosContainer");
     populateVideos(trendingVideos, "trendingVideosContainer");
     return;
   }
-
   const matched = allVideos.filter(v=>v.title.toLowerCase().includes(query));
   const unmatched = allVideos.filter(v=>!v.title.toLowerCase().includes(query));
-
-  // Put matched videos on top
   populateVideos([...matched, ...unmatched], "newVideosContainer");
   populateVideos([], "trendingVideosContainer");
-
-  // Highlight matched videos
   setTimeout(()=>{
     const cards = document.querySelectorAll('.card');
-    cards.forEach((card, index)=>{
-      if(index < matched.length){
-        card.classList.add('highlight');
-      }
-    });
-    // Scroll first match into view
+    cards.forEach((card,index)=>{ if(index<matched.length){ card.classList.add('highlight'); } });
     if(cards.length>0) cards[0].scrollIntoView({behavior:'smooth', block:'start'});
   },100);
 }
-</script>
 
-</body>
-</html>
+// Hamburger menu toggle
+const hamburgerIcon = document.getElementById('hamburgerIcon');
+const menuContent = document.getElementById('menuContent');
+hamburgerIcon.addEventListener('click', () => {
+  menuContent.style.display = menuContent.style.display === 'flex' ? 'none' : 'flex';
+  menuContent.style.flexDirection = 'column';
+});
+
+// Open games in modal
+function openGame(gameName){
+  const gameModal = document.createElement('div');
+  gameModal.id = 'gameModal';
+  gameModal.style.cssText = "position:fixed;top:
