@@ -3,14 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<!-- SEO Meta Tags -->
 <title>Free2Free — Videos</title>
-<meta name="description" content="Free2Free — Watch new and trending videos online for free. Search, share, and enjoy the latest video content.">
-<meta name="keywords" content="Free2Free, free videos, trending videos, new videos, watch online">
-<meta name="robots" content="index, follow">
-<meta name="author" content="Free2Free Team">
-
 <style>
   body {margin:0; font-family:sans-serif; background:#111; color:#fff;}
   header {background:#222; display:flex; justify-content:space-between; align-items:center; padding:15px; position:sticky; top:0; z-index:100;}
@@ -27,7 +20,7 @@
   .title {font-size:16px; font-weight:bold; color:#ff6b6b; text-align:center;}
   footer {background:#222; text-align:center; padding:15px; position:relative;}
   
-  /* Floating Buttons */
+  /* Floating WhatsApp Button */
   .floating-whatsapp, .floating-feedback {
     position:fixed;
     bottom:20px;
@@ -53,7 +46,7 @@
     25%,75% {border-color: #ff6b6b;}
   }
 
-  /* Modal */
+  /* Modal Styles */
   .modal {display:none; position:fixed; z-index:1000; left:0; top:0; width:100%; height:100%; background:rgba(0,0,0,0.6); display:flex; justify-content:center; align-items:center;}
   .modal-content {background:#222; padding:20px; border-radius:12px; width:90%; max-width:400px; text-align:center; position:relative;}
   .modal-content input, .modal-content textarea {width:100%; margin:8px 0; padding:10px; border:none; border-radius:6px;}
@@ -123,7 +116,7 @@
 const whatsappNumber = ""; // UK number
 let selectedLink = "";
 
-// Video data
+// Video data only
 const newVideos = [
   {title:"Hot Clip (1.0)", link:"https://drive.google.com/file/d/1-CnuGW3P-ZxBnTWwbCY7ofJ1K9nbjLUb/preview"},
   {title:"Coming Soon", link:""}
@@ -215,7 +208,7 @@ feedbackForm.addEventListener("submit", async function(e) {
     if (res.ok) {
       feedbackForm.style.display = "none";
       document.getElementById("feedbackSuccess").style.display = "block";
-      setTimeout(()=>{ closeFeedback(); }, 3000); // Auto-close
+      setTimeout(()=>{ closeFeedback(); }, 3000); // Auto-close after 3 sec
     } else {
       alert("⚠️ Something went wrong. Please try again.");
     }
